@@ -48,19 +48,19 @@ bridges = [{
         'angle':-60,
         'flip': False,
         'surface': rotate(bridgef,-60),
-        'position': [140, 100],
+        'position': [150, 100],
         'crossed': False },
         {
-        'angle': -70,
+        'angle': -40,
         'flip': True,
-        'surface': flip(rotate(bridgef,-70), True, False),
-        'position': [90, 350],
+        'surface': flip(rotate(bridgef,-40), True, False),
+        'position': [40, 300],
         'crossed': False },
         {
         'angle':-90,
         'flip': False,
         'surface': rotate(bridgef,-90),
-        'position': [400, 370],
+        'position': [400, 340],
         'crossed': False },
         {
         'angle':-90,
@@ -72,13 +72,19 @@ bridges = [{
         'angle':-60,
         'flip': False,
         'surface': rotate(bridgef,-60),
-        'position': [600, 30],
+        'position': [620, 25],
         'crossed': False },
         {
-        'angle':-60,
+        'angle':-70,
+        'flip': True,
+        'surface': flip(rotate(bridgef,-70), True, False),
+        'position': [630, 350],
+        'crossed': False },
+        {
+        'angle':0,
         'flip': False,
-        'surface': rotate(bridgef,-60),
-        'position': [600, 330],
+        'surface': rotate(bridgef,0),
+        'position': [500, 250],
         'crossed': False }
     ]
 # ticks_to_asteroid = 90
@@ -96,6 +102,7 @@ bridges = [{
 #             asteroids.remove(asteroid)
 # ticks = 0
 #
+
 def get_rect(obj):
     return Rect(obj['position'][0],
                 obj['position'][1],
@@ -124,11 +131,11 @@ while running:
     #     ticks += 1
     # else:
     #     ticks = 0
-    #     asteroids.append(create_asteroid())
+    #     asteroids.append(create_asteroid()).
 
     screen.blit(pygame.Surface(screen.get_size()), (0, 0))
     screen.blit(background, (0, 0))
-
+    player_score = 0
     bridge_crossed()
     # remove_used_asteroids()
     # move_asteroids()
@@ -141,8 +148,15 @@ while running:
             else:
                 bridge['surface'] = rotate(bridgeft,bridge['angle'])
             screen.blit(bridge['surface'], bridge['position'])
+            player_score += 1
+
     # if not collided:
     #     collided = ship_collided()
+
+    player_score = "Pontos : " + str(player_score)
+
+    textsurface = game_font.render(player_score, False, (0, 0, 0))
+    screen.blit(textsurface , (0,0))
 
     player['position'][0] += player['speed']['x']
     player['position'][1] += player['speed']['y']
