@@ -9,12 +9,20 @@ from pygame.transform import *
 pygame.init()
 pygame.font.init()
 
+
 # TODO: Add sounds
 font_name = pygame.font.get_default_font()
-game_font = pygame.font.SysFont(font_name, 72)
+game_font = pygame.font.SysFont(font_name, 40)
+font_over = pygame.font.SysFont("comicsansms", 100)
+
+#Colors definitions
+color_red = (255,0,0)
+color_green = (0,255,127)
+color_black = (0,0,0)
 
 # Display size
 screen = pygame.display.set_mode((800, 620))
+
 
 
 background_filename = 'images/bg_c1.png'
@@ -103,6 +111,19 @@ bridges = [{
 # ticks = 0
 #
 
+def button(x,y,w,h,cor):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    pygame.draw.rect(screen, cor, (x,y,w,h))
+
+    if x+w > mouse[0] > x and y+h > mouse[1] > y and click[0] == 1:
+        #pygame.quit()
+        #pygame.display.quit()
+        return False
+    else:
+        return True
+
 def get_rect(obj):
     return Rect(obj['position'][0],
                 obj['position'][1],
@@ -139,6 +160,7 @@ while running:
     bridge_crossed()
     # remove_used_asteroids()
     # move_asteroids()
+
     for bridge in bridges:
         if not bridge['crossed']:
             screen.blit(bridge['surface'], bridge['position'])
@@ -149,17 +171,24 @@ while running:
                 bridge['surface'] = rotate(bridgeft,bridge['angle'])
             screen.blit(bridge['surface'], bridge['position'])
             player_score += 1
-        if player_score == 6:
-            textsurface = game_font.render("GAME OVER", False, (300,300, 300))
-            screen.blit(textsurface , (0,0))
+
+    if player_score >= 6:
+        textsurface = font_over.render("GAME OVER", True, color_red)
+        screen.blit(textsurface , (300,200))
+        #button(150,450,100,50,color_green,game_loop)
+        running = button(150,450,100,50,color_red)
+        textsurface = game_font.render("QUIT", True, color_black)
+        screen.blit(textsurface , (155,455))
+
+
 
 
     # if not collided:
-    #     collided = ship_collided()
+    #     collided = ship_collided()15
 
     player_score = "Pontos : " + str(player_score)
 
-    textsurface = game_font.render(player_score, False, (0, 0, 0))
+    textsurface = game_font.render(player_score, False, color_black)
     screen.blit(textsurface , (0,0))
 
     player['position'][0] += player['speed']['x']
