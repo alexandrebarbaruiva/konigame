@@ -149,6 +149,10 @@ while running:
                 bridge['surface'] = rotate(bridgeft,bridge['angle'])
             screen.blit(bridge['surface'], bridge['position'])
             player_score += 1
+        if player_score == 6:
+            textsurface = game_font.render("GAME OVER", False, (300,300, 300))
+            screen.blit(textsurface , (0,0))
+
 
     # if not collided:
     #     collided = ship_collided()
