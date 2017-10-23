@@ -9,12 +9,20 @@ from pygame.transform import *
 pygame.init()
 pygame.font.init()
 
+
 # TODO: Add sounds
 font_name = pygame.font.get_default_font()
-game_font = pygame.font.SysFont(font_name, 72)
+game_font = pygame.font.SysFont(font_name, 40)
+font_over = pygame.font.SysFont("comicsansms", 100)
+
+#Colors definitions
+color_red = (255,0,0)
+color_green = (0,255,127)
+color_black = (0,0,0)
 
 # Display size
 screen = pygame.display.set_mode((800, 620))
+
 
 
 background_filename = 'images/bg_c1.png'
@@ -48,19 +56,19 @@ bridges = [{
         'angle':-60,
         'flip': False,
         'surface': rotate(bridgef,-60),
-        'position': [140, 100],
+        'position': [150, 100],
         'crossed': False },
         {
-        'angle': -70,
+        'angle': -40,
         'flip': True,
-        'surface': flip(rotate(bridgef,-70), True, False),
-        'position': [90, 350],
+        'surface': flip(rotate(bridgef,-40), True, False),
+        'position': [40, 300],
         'crossed': False },
         {
         'angle':-90,
         'flip': False,
         'surface': rotate(bridgef,-90),
-        'position': [400, 370],
+        'position': [400, 340],
         'crossed': False },
         {
         'angle':-90,
@@ -72,13 +80,19 @@ bridges = [{
         'angle':-60,
         'flip': False,
         'surface': rotate(bridgef,-60),
-        'position': [600, 30],
+        'position': [620, 25],
         'crossed': False },
         {
-        'angle':-60,
+        'angle':-70,
+        'flip': True,
+        'surface': flip(rotate(bridgef,-70), True, False),
+        'position': [630, 350],
+        'crossed': False },
+        {
+        'angle':0,
         'flip': False,
-        'surface': rotate(bridgef,-60),
-        'position': [600, 330],
+        'surface': rotate(bridgef,0),
+        'position': [500, 250],
         'crossed': False }
     ]
 # ticks_to_asteroid = 90
@@ -96,6 +110,20 @@ bridges = [{
 #             asteroids.remove(asteroid)
 # ticks = 0
 #
+
+def button(x,y,w,h,cor):
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    pygame.draw.rect(screen, cor, (x,y,w,h))
+
+    if x+w > mouse[0] > x and y+h > mouse[1] > y and click[0] == 1:
+        #pygame.quit()
+        #pygame.display.quit()
+        return False
+    else:
+        return True
+
 def get_rect(obj):
     return Rect(obj['position'][0],
                 obj['position'][1],
@@ -124,14 +152,15 @@ while running:
     #     ticks += 1
     # else:
     #     ticks = 0
-    #     asteroids.append(create_asteroid())
+    #     asteroids.append(create_asteroid()).
 
     screen.blit(pygame.Surface(screen.get_size()), (0, 0))
     screen.blit(background, (0, 0))
-
+    player_score = 0
     bridge_crossed()
     # remove_used_asteroids()
     # move_asteroids()
+
     for bridge in bridges:
         if not bridge['crossed']:
             screen.blit(bridge['surface'], bridge['position'])
@@ -141,8 +170,26 @@ while running:
             else:
                 bridge['surface'] = rotate(bridgeft,bridge['angle'])
             screen.blit(bridge['surface'], bridge['position'])
+            player_score += 1
+
+    if player_score >= 6:
+        textsurface = font_over.render("GAME OVER", True, color_red)
+        screen.blit(textsurface , (300,200))
+        #button(150,450,100,50,color_green,game_loop)
+        running = button(150,450,100,50,color_red)
+        textsurface = game_font.render("QUIT", True, color_black)
+        screen.blit(textsurface , (155,455))
+
+
+
+
     # if not collided:
-    #     collided = ship_collided()
+    #     collided = ship_collided()15
+
+    player_score = "Pontos : " + str(player_score)
+
+    textsurface = game_font.render(player_score, False, color_black)
+    screen.blit(textsurface , (0,0))
 
     player['position'][0] += player['speed']['x']
     player['position'][1] += player['speed']['y']
