@@ -67,42 +67,49 @@ player = {
 bdgf = image.load('images/bridge.png').convert_alpha()
 bdgftr = image.load('images/bridge_transp.png').convert_alpha()
 bridges = [{
-        'angle':-60,
+        'show': True,
+        'angle': -60,
         'flip': False,
         'surface': rotate(bdgf,-60),
         'position': [150, 100],
         'crossed': False },
         {
+        'show': True,
         'angle': -40,
         'flip': True,
         'surface': flip(rotate(bdgf,-40), True, False),
         'position': [40, 300],
         'crossed': False },
         {
-        'angle':-90,
+        'show': True,
+        'angle': -90,
         'flip': False,
         'surface': rotate(bdgf,-90),
         'position': [400, 340],
         'crossed': False },
         {
+        'show': True,
         'angle':-90,
         'flip': False,
         'surface': rotate(bdgf,-90),
         'position': [400, 60],
         'crossed': False },
         {
+        'show': True,
         'angle':-60,
         'flip': False,
         'surface': rotate(bdgf,-60),
         'position': [620, 25],
         'crossed': False },
         {
+        'show': True,
         'angle':-70,
         'flip': True,
         'surface': flip(rotate(bdgf,-70), True, False),
         'position': [630, 350],
         'crossed': False },
         {
+        'show': True,
         'angle':0,
         'flip': False,
         'surface': rotate(bdgf,0),
@@ -112,6 +119,7 @@ bridges = [{
 
 running = True
 clock = pygame.time.Clock()
+reset_game = False
 
 while running:
 
@@ -130,6 +138,21 @@ while running:
     elif pressed_keys[K_RIGHT]:
         player['speed']['x'] = 10
 
+    if pressed_keys[K_1]:
+        bridges[0]['show'] = False
+    if pressed_keys[K_2]:
+        bridges[1]['show'] = False
+    if pressed_keys[K_3]:
+        bridges[2]['show'] = False
+    if pressed_keys[K_4]:
+        bridges[3]['show'] = False
+    if pressed_keys[K_5]:
+        bridges[4]['show'] = False
+    if pressed_keys[K_6]:
+        bridges[5]['show'] = False
+    if pressed_keys[K_7]:
+        bridges[6]['show'] = False
+
     screen.blit(pygame.Surface(screen.get_size()), (0, 0))
     screen.blit(background, (0, 0))
 
@@ -138,15 +161,16 @@ while running:
     bridge_crossed()
 
     for bridge in bridges:
-        if not bridge['crossed']:
-            screen.blit(bridge['surface'], bridge['position'])
-        else:
-            if bridge['flip']:
-                bridge['surface'] = flip(rotate(bdgftr,bridge['angle']), True, False)
+        if bridge['show']:
+            if not bridge['crossed']:
+                screen.blit(bridge['surface'], bridge['position'])
             else:
-                bridge['surface'] = rotate(bdgftr,bridge['angle'])
-            screen.blit(bridge['surface'], bridge['position'])
-            player_score += 1
+                if bridge['flip']:
+                    bridge['surface'] = flip(rotate(bdgftr,bridge['angle']), True, False)
+                else:
+                    bridge['surface'] = rotate(bdgftr,bridge['angle'])
+                screen.blit(bridge['surface'], bridge['position'])
+                player_score += 1
 
     if player_score >= 6:
         text_surface = font_over.render("GAME OVER", True, color_red)
