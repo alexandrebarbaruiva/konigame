@@ -123,6 +123,7 @@ running = True
 clock = pygame.time.Clock()
 reset_game = False
 bridges = brdg()
+player_score = 0
 while running:
 
     # Pressed or clicked events
@@ -131,8 +132,10 @@ while running:
         if event.type == QUIT or pressed_keys[K_ESCAPE]:
             exit()
     # Check for quantity of bridges available
+    print([bridge['show'] for bridge in bridges])
+    print(type(player_score), player_score)
     available_bridges = sum([bridge['show'] for bridge in bridges])
-    
+
     if(((player_score < available_bridges) and (available_bridges % 2 != 0)) or (available_bridges % 2 == 0)):
         if pressed_keys[K_UP]:
             player['speed']['y'] = -7
@@ -178,16 +181,15 @@ while running:
 
     if player_score >= 6:
         text_surface = font_over.render("GAME OVER", True, color_red)
-        screen.blit(text_surface , (200,200))
+        screen.blit(text_surface , (100,200))
         running = button(350,350,100,50,color_red)
         quit_surface = game_font.render("QUIT", True, color_black)
         screen.blit(quit_surface , (365,365))
-        player['position'] = [30,30]
 
 
     # Show score
-    player_score = "Pontuação: " + str(player_score)
-    score_surface = small_font.render(player_score, False, color_black)
+    player_score_surface = "Pontuação: " + str(player_score)
+    score_surface = small_font.render(player_score_surface, False, color_black)
     screen.blit(score_surface , (0,0))
 
     #Restart Button
