@@ -23,7 +23,6 @@ def get_rect(obj):
                 obj['surface'].get_height() - 10)
 
 def get_b_rect(obj):
-    print(obj['position'][0], obj['position'][1],obj['surface'].get_width(),obj['surface'].get_height())
     return Rect(obj['position'][0] + 50,
                 obj['position'][1] + 50,
                 obj['surface'].get_width() - 50,
@@ -132,8 +131,6 @@ while running:
         if event.type == QUIT or pressed_keys[K_ESCAPE]:
             exit()
     # Check for quantity of bridges available
-    print([bridge['show'] for bridge in bridges])
-    print(type(player_score), player_score)
     available_bridges = sum([bridge['show'] for bridge in bridges])
 
     if(((player_score < available_bridges) and (available_bridges % 2 != 0)) or (available_bridges % 2 == 0)):
@@ -179,6 +176,12 @@ while running:
                 screen.blit(bridge['surface'], bridge['position'])
                 player_score += 1
 
+    # Player location
+    # if (player['position'][0] + player['speed']['x'] < ):
+    player['position'][0] += player['speed']['x']
+    player['position'][1] += player['speed']['y']
+    screen.blit(player['surface'], player['position'])
+
     if player_score >= 6:
         text_surface = font_over.render("GAME OVER", True, color_red)
         screen.blit(text_surface , (100,200))
@@ -196,13 +199,8 @@ while running:
     reset_game = not button(650,0,77,35,color_green)
     start_surface = small_font.render("RESET", True, color_black)
     screen.blit(start_surface , (655,10))
-    if reset_game:
+    if reset_game or pressed_keys[K_r]:
         bridges = brdg()
-
-    # Player location
-    player['position'][0] += player['speed']['x']
-    player['position'][1] += player['speed']['y']
-    screen.blit(player['surface'], player['position'])
 
     # Restart game
     player['speed'] = {'x': 0, 'y': 0}
