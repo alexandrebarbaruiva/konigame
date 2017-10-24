@@ -131,14 +131,15 @@ while running:
         if event.type == QUIT or pressed_keys[K_ESCAPE]:
             exit()
 
-    if pressed_keys[K_UP]:
-        player['speed']['y'] = -10
-    elif pressed_keys[K_DOWN]:
-        player['speed']['y'] = 10
-    if pressed_keys[K_LEFT]:
-        player['speed']['x'] = -10
-    elif pressed_keys[K_RIGHT]:
-        player['speed']['x'] = 10
+    if(player_score < 6):
+        if pressed_keys[K_UP]:
+            player['speed']['y'] = -7
+        elif pressed_keys[K_DOWN]:
+            player['speed']['y'] = 7
+        if pressed_keys[K_LEFT]:
+            player['speed']['x'] = -7
+        elif pressed_keys[K_RIGHT]:
+            player['speed']['x'] = 7
 
     if pressed_keys[K_1]:
         bridges[0]['show'] = False
@@ -193,7 +194,6 @@ while running:
     screen.blit(start_surface , (655,10))
     if reset_game == False:
         bridges = brdg()
-        player['position'] = [30,30]
 
     # Player location
     player['position'][0] += player['speed']['x']
