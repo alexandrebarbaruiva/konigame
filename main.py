@@ -121,7 +121,7 @@ def brdg():
 
 running = True
 clock = pygame.time.Clock()
-reset_game = True
+reset_game = False
 bridges = brdg()
 while running:
 
@@ -130,8 +130,10 @@ while running:
     for event in pygame.event.get():
         if event.type == QUIT or pressed_keys[K_ESCAPE]:
             exit()
-
-    if(player_score < 6):
+    # Check for quantity of bridges available
+    available_bridges = sum([bridge['show'] for bridge in bridges])
+    
+    if(((player_score < available_bridges) and (available_bridges % 2 != 0)) or (available_bridges % 2 == 0)):
         if pressed_keys[K_UP]:
             player['speed']['y'] = -7
         elif pressed_keys[K_DOWN]:
@@ -189,10 +191,10 @@ while running:
     screen.blit(score_surface , (0,0))
 
     #Restart Button
-    reset_game = button(650,0,77,35,color_green)
+    reset_game = not button(650,0,77,35,color_green)
     start_surface = small_font.render("RESET", True, color_black)
     screen.blit(start_surface , (655,10))
-    if reset_game == False:
+    if reset_game:
         bridges = brdg()
 
     # Player location
