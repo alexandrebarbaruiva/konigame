@@ -17,16 +17,22 @@ def button(x,y,w,h,cor):
         return True
 
 def get_rect(obj):
-    return Rect(obj['position'][0] + 40,
-                obj['position'][1] + 20,
-                obj['surface'].get_width() - 20,
-                obj['surface'].get_height() - 10)
-
-def get_b_rect(obj):
     return Rect(obj['position'][0],
                 obj['position'][1],
                 obj['surface'].get_width(),
                 obj['surface'].get_height())
+
+def get_b_rect(obj):
+    # if (obj['surface'].get_width() < 110):
+    #     return Rect(obj['position'][0] - 10,
+    #                 obj['position'][1] - 30,
+    #                 obj['surface'].get_width() - 10,
+    #                 obj['surface'].get_height() - 20)
+
+    return Rect(obj['position'][0] + 20,
+                obj['position'][1] + 100,
+                obj['surface'].get_width() - 20,
+                obj['surface'].get_height() - 200)
 
 def bridge_crossed():
     person_rect = get_rect(player)
@@ -42,6 +48,7 @@ font_name = pygame.font.get_default_font()
 game_font = pygame.font.SysFont(font_name, 40)
 font_over = pygame.font.SysFont("comicsansms", 100)
 small_font = pygame.font.SysFont(font_name, 30)
+medium_font = pygame.font.SysFont(font_name, 50)
 
 # Color definitions
 color_red = (255,0,0)
@@ -64,7 +71,7 @@ player = {
         'y': 0
     }
 }
-bdgf = image.load('images/bridge.png').convert()
+bdgf = image.load('images/bridge.png').convert_alpha()
 bdgftr = image.load('images/bridge_transp.png').convert_alpha()
 def brdg():
     return [{
@@ -185,28 +192,28 @@ while running:
 
     if player_score >= 6 and available_bridges == 7:
         text_surface = font_over.render("GAME OVER", True, color_red)
-        screen.blit(text_surface , (100,200))
-        running = button(350,350,100,50,color_red)
+        screen.blit(text_surface , (330,200))
+        running = button(550,400,100,50,color_red)
         quit_surface = game_font.render("QUIT", True, color_black)
-        screen.blit(quit_surface , (365,365))
+        screen.blit(quit_surface , (565,415))
 
     elif player_score == available_bridges:
         text_surface = font_over.render("GOOD JOB", True, color_black)
-        screen.blit(text_surface , (120,200))
-        running = button(350,350,100,50, color_green)
+        screen.blit(text_surface , (320,200))
+        running = button(550,350,100,50, color_green)
         quit_surface = game_font.render("QUIT", True, color_black)
-        screen.blit(quit_surface , (365,365))
+        screen.blit(quit_surface , (565,365))
 
 
     # Show score
     player_score_surface = "Pontuação: " + str(player_score)
-    score_surface = small_font.render(player_score_surface, False, color_black)
+    score_surface = medium_font.render(player_score_surface, False, color_black)
     screen.blit(score_surface , (0,0))
 
     #Restart Button
-    reset_game = not button(650,0,77,35,color_green)
+    reset_game = not button(1120,0,77,35,color_green)
     start_surface = small_font.render("RESET", True, color_black)
-    screen.blit(start_surface , (655,10))
+    screen.blit(start_surface , (1125,10))
     if reset_game or pressed_keys[K_r]:
         bridges = brdg()
 
