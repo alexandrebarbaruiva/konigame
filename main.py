@@ -18,15 +18,15 @@ def button(x,y,w,h,cor):
 
 def get_rect(obj):
     return Rect(obj['position'][0] + 40,
-                obj['position'][1] + 40,
-                obj['surface'].get_width() - 40,
+                obj['position'][1] + 20,
+                obj['surface'].get_width() - 20,
                 obj['surface'].get_height() - 10)
 
 def get_b_rect(obj):
-    return Rect(obj['position'][0] + 50,
-                obj['position'][1] + 50,
-                obj['surface'].get_width() - 50,
-                obj['surface'].get_height() - 50)
+    return Rect(obj['position'][0],
+                obj['position'][1],
+                obj['surface'].get_width(),
+                obj['surface'].get_height())
 
 def bridge_crossed():
     person_rect = get_rect(player)
@@ -49,10 +49,10 @@ color_green = (0,255,0)
 color_black = (0,0,0)
 
 # Display size
-screen = pygame.display.set_mode((800, 620))
+screen = pygame.display.set_mode((1200, 720))
 
 # Load background image
-bg_filename = 'images/bg_c1.png'
+bg_filename = 'images/bg_final.png'
 background = image.load(bg_filename).convert()
 pygame.display.set_caption('Bridges')
 
@@ -64,57 +64,57 @@ player = {
         'y': 0
     }
 }
-bdgf = image.load('images/bridge.png').convert_alpha()
+bdgf = image.load('images/bridge.png').convert()
 bdgftr = image.load('images/bridge_transp.png').convert_alpha()
 def brdg():
     return [{
             'show': True,
-            'angle': -60,
+            'angle': -80,
             'flip': False,
-            'surface': rotate(bdgf,-60),
-            'position': [150, 100],
-            'crossed': False },
-            {
-            'show': True,
-            'angle': -40,
-            'flip': True,
-            'surface': flip(rotate(bdgf,-40), True, False),
-            'position': [40, 300],
+            'surface': rotate(bdgf,-80),
+            'position': [250, 170],
             'crossed': False },
             {
             'show': True,
             'angle': -90,
             'flip': False,
             'surface': rotate(bdgf,-90),
-            'position': [400, 340],
+            'position': [405, 420],
+            'crossed': False },
+            {
+            'show': True,
+            'angle': -90,
+            'flip': False,
+            'surface': rotate(bdgf,-90),
+            'position': [630, 420],
             'crossed': False },
             {
             'show': True,
             'angle':-90,
             'flip': False,
             'surface': rotate(bdgf,-90),
-            'position': [400, 60],
+            'position': [600, 70],
             'crossed': False },
             {
             'show': True,
             'angle':-60,
             'flip': False,
             'surface': rotate(bdgf,-60),
-            'position': [620, 25],
+            'position': [990, 25],
             'crossed': False },
             {
             'show': True,
             'angle':-70,
             'flip': True,
             'surface': flip(rotate(bdgf,-70), True, False),
-            'position': [630, 350],
+            'position': [990, 440],
             'crossed': False },
             {
             'show': True,
-            'angle':0,
+            'angle': -4,
             'flip': False,
-            'surface': rotate(bdgf,0),
-            'position': [500, 250],
+            'surface': rotate(bdgf,-4),
+            'position': [805, 290],
             'crossed': False }
         ]
 
@@ -123,6 +123,7 @@ clock = pygame.time.Clock()
 reset_game = False
 bridges = brdg()
 player_score = 0
+
 while running:
 
     # Pressed or clicked events
@@ -182,10 +183,17 @@ while running:
     player['position'][1] += player['speed']['y']
     screen.blit(player['surface'], player['position'])
 
-    if player_score >= 6:
+    if player_score >= 6 and available_bridges == 7:
         text_surface = font_over.render("GAME OVER", True, color_red)
         screen.blit(text_surface , (100,200))
         running = button(350,350,100,50,color_red)
+        quit_surface = game_font.render("QUIT", True, color_black)
+        screen.blit(quit_surface , (365,365))
+
+    elif player_score == available_bridges:
+        text_surface = font_over.render("GOOD JOB", True, color_black)
+        screen.blit(text_surface , (120,200))
+        running = button(350,350,100,50, color_green)
         quit_surface = game_font.render("QUIT", True, color_black)
         screen.blit(quit_surface , (365,365))
 
