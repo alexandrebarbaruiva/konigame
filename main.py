@@ -23,11 +23,17 @@ def get_rect(obj):
                 obj['surface'].get_height())
 
 def get_b_rect(obj):
-    # if (obj['surface'].get_width() < 110):
-    #     return Rect(obj['position'][0] - 10,
-    #                 obj['position'][1] - 30,
-    #                 obj['surface'].get_width() - 10,
-    #                 obj['surface'].get_height() - 20)
+    print(obj['position'][0],
+            obj['position'][1],
+            obj['surface'].get_width(),
+            obj['surface'].get_height())
+
+    if (obj['surface'].get_height() < 150):
+        print("bridge")
+        return Rect(obj['position'][0] + 50,
+                    obj['position'][1] + 20,
+                    obj['surface'].get_width() - 20,
+                    obj['surface'].get_height() - 100)
 
     return Rect(obj['position'][0] + 20,
                 obj['position'][1] + 100,
