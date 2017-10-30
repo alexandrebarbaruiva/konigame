@@ -141,7 +141,7 @@ while running:
     # Check for quantity of bridges available
     available_bridges = sum([bridge['show'] for bridge in bridges])
 
-    if(((player_score < available_bridges) and (available_bridges % 2 != 0)) or (available_bridges % 2 == 0)):
+    if(player_score < available_bridges):
         if pressed_keys[K_UP] and player['position'][1] > 0:
             player['speed']['y'] = -7
         elif pressed_keys[K_DOWN] and player['position'][1] + player['surface'].get_height() < screen.get_size()[1]:
