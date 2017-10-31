@@ -4,6 +4,13 @@ import pygame
 from pygame.locals import *
 from pygame import *
 from pygame.transform import *
+import os
+
+local = os.getcwd()
+
+# P1
+# [-26, 205]
+# [219, 471]
 
 def button(x,y,w,h,cor):
     mouse = pygame.mouse.get_pos()
@@ -59,20 +66,20 @@ color_black = (0,0,0)
 screen = pygame.display.set_mode((1200, 720))
 
 # Load background image
-bg_filename = 'images/bg_final.png'
+bg_filename = local + '/images/bg_final.png'
 background = image.load(bg_filename).convert()
 pygame.display.set_caption('Bridges')
 
 player = {
-    'surface': image.load('images/player3.png').convert_alpha(),
+    'surface': image.load(local + '/images/player3.png').convert_alpha(),
     'position': [30, 30],
     'speed': {
         'x': 0,
         'y': 0
     }
 }
-bdgf = image.load('images/bridge.png').convert_alpha()
-bdgftr = image.load('images/bridge_transp.png').convert_alpha()
+bdgf = image.load(local + '/images/bridge.png').convert_alpha()
+bdgftr = image.load(local + '/images/bridge_transp.png').convert_alpha()
 def brdg():
     return [{
             'show': True,
@@ -132,7 +139,7 @@ bridges = brdg()
 player_score = 0
 
 while running:
-
+    print(player['position'])
     # Pressed or clicked events
     pressed_keys = pygame.key.get_pressed()
     for event in pygame.event.get():
@@ -141,7 +148,7 @@ while running:
     # Check for quantity of bridges available
     available_bridges = sum([bridge['show'] for bridge in bridges])
 
-    if(((player_score < available_bridges) and (available_bridges % 2 != 0)) or (available_bridges % 2 == 0)):
+    if((player_score < available_bridges) or (available_bridges == 7 and player_score < 6)):
         if pressed_keys[K_UP]:
             player['speed']['y'] = -7
         elif pressed_keys[K_DOWN]:
